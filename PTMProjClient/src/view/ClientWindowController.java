@@ -3,15 +3,22 @@ package view;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import Interperter.Interperter;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -21,17 +28,21 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Pair;
+import model.Model;
 import view_model.ViewModel;
 
 public class ClientWindowController implements Observer {
+	private Stage stage;
 	ViewModel vm;
 	@FXML
-	TextField ip;
+	TextField ip_TextField;
 	@FXML
-	TextField port;
+	TextField port_TextField;
 	@FXML
 	TextArea Interperter_TextArea;
 	@FXML
@@ -39,16 +50,32 @@ public class ClientWindowController implements Observer {
 	
 	public ClientWindowController() {
 		vm=new ViewModel();
+		stage= new Stage();
 		this.Interperter_TextArea =new TextArea("none");
-		this.ip=new TextField();
-		this.port=new TextField();
+		this.ip_TextField=new TextField();
+		this.port_TextField=new TextField();
 		vm.ToInterpert.bind(this.Interperter_TextArea.textProperty());
-		vm.ip.bind(ip.textProperty());
-		vm.port.bind(port.textProperty());
+		vm.ip.bind(ip_TextField.textProperty());
+		vm.port.bind(port_TextField.textProperty());
 		
 	}
 	
-	
+	public void OpenPopup() {
+		Parent root = null;
+        try {
+            FXMLLoader fxmlLoader=new FXMLLoader(getClass().getResource("PopUp.fxml"));
+            root = fxmlLoader.load();
+            ClientWindowController cwc=fxmlLoader.getController();
+            cwc.vm=this.vm;
+            stage.setTitle("Connect");
+            stage.setScene(new Scene(root));
+            if(!stage.isShowing()) {
+                stage.show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
 	public void LoadData() {
 		 FileChooser fc= new FileChooser();
 		 fc.setTitle("open file");
@@ -90,71 +117,26 @@ public class ClientWindowController implements Observer {
 	}
 	
 	public void Connect() {
-		// Create the custom dialog.
-		Dialog<Pair<String, String>> dialog = new Dialog<>();
-		dialog.setTitle("Login Dialog");
-		dialog.setHeaderText("Look, a Custom Login Dialog");
-
-		//need to add image!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
-		// Set the icon (must be included in the project).
-	//	dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
-
-		// Set the button types.
-		ButtonType ConnectButtonType = new ButtonType("Connect", ButtonData.OK_DONE);
-		dialog.getDialogPane().getButtonTypes().addAll(ConnectButtonType, ButtonType.CANCEL);
-
-		// Create the ip and port labels and fields.
-		GridPane grid = new GridPane();
-		grid.setHgap(10);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(20, 150, 10, 10));
-
-		ip = new TextField();
-		ip.setPromptText("IP Adress");
-		port = new TextField();
-		port.setPromptText("Destination Port");
-		
-		grid.add(new Label("IP Adress:"), 0, 0);
-		grid.add(ip, 1, 0);
-		grid.add(new Label("Destination Port:"), 0, 1);
-		grid.add(port, 1, 1);
-
-		// Enable/Disable Connect button depending on whether a ip was entered.
-		Node ConnectButton = dialog.getDialogPane().lookupButton(ConnectButtonType);
-		ConnectButton.setDisable(true);
-
-		// Do some validation (using the Java 8 lambda syntax).
-		ip.textProperty().addListener((observable, oldValue, newValue) -> {
-		    ConnectButton.setDisable(newValue.trim().isEmpty());
-		});
-
-		dialog.getDialogPane().setContent(grid);
-
-		// Request focus on the ip field by default.
-		Platform.runLater(() -> ip.requestFocus());
-
-		// Convert the result to a username-password-pair when the login button is clicked.
-		dialog.setResultConverter(dialogButton -> {
-		    if (dialogButton == ConnectButtonType) {
-		        //return new Pair<>(ip.getText(), port.getText());
-		    	System.out.println(ip.getText()+port.getText());
-		    	try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		    	vm.connect();
-		    }
-		    return null;
-		});
-
-		dialog.showAndWait();
-
+		int port= Integer.parseInt(this.port_TextField.textProperty().get());
+		if(validIP(this.ip_TextField.textProperty().get()) && (port >0 && port < 65536))
+			vm.connect();
 	}
 
 
 	@Override
 	public void update(Observable o, Object arg) {}
+	
+	public static boolean validIP(String ip) {
+	    if (ip == null || ip.isEmpty()) return false;
+	    ip = ip.trim();
+	    if ((ip.length() < 6) & (ip.length() > 15)) return false;
+
+	    try {
+	        Pattern pattern = Pattern.compile("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+	        Matcher matcher = pattern.matcher(ip);
+	        return matcher.matches();
+	    } catch (PatternSyntaxException ex) {
+	        return false;
+	    }
+	}
 }
