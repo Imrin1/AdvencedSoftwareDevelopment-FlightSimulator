@@ -7,118 +7,58 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ClientWindowController">
    <center>
-      <HBox prefHeight="373.0" prefWidth="838.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="371.0" prefWidth="773.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox>
+            <RadioButton layoutX="308.0" layoutY="9.0" mnemonicParsing="false" onAction="#Interpert" prefHeight="37.0" prefWidth="76.0" text="Auotpilot">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton layoutX="529.0" layoutY="9.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="70.0" text="Manual">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </RadioButton>
+            <TextArea fx:id="Interperter_TextArea" layoutX="308.0" layoutY="61.0" prefHeight="296.0" prefWidth="183.0" style="-fx-background-color: yellow;" text="none&#10;">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </TextArea>
+            <Button layoutX="424.0" layoutY="15.0" mnemonicParsing="false" onAction="#LoadTxtFile" prefHeight="18.0" prefWidth="82.0" text="Load txt file" />
+            <Label layoutX="605.0" layoutY="63.0" text="&lt;- aileron -&gt;" />
+            <HBox layoutX="21.0" layoutY="18.0" prefHeight="45.0" prefWidth="280.0">
                <children>
-                  <HBox>
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#Connect" text="Connect">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#LoadData" text="Load data">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" text="Calculate Path">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
-                  <Canvas height="225.0" width="227.0">
-                     <VBox.margin>
+                  <Button mnemonicParsing="false" onAction="#Connect" text="Connect">
+                     <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Canvas>
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#LoadData" text="Load data">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" text="Calculate Path">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
-            </VBox>
-            <VBox prefHeight="391.0" prefWidth="534.0">
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <RadioButton mnemonicParsing="false" onAction="#Interpert" prefHeight="50.0" prefWidth="193.0" text="Auotpilot">
-                           <padding>
-                              <Insets bottom="10.0" left="25.0" top="10.0" />
-                           </padding>
-                        </RadioButton>
-                        <RadioButton mnemonicParsing="false" text="Manual">
-                           <padding>
-                              <Insets bottom="10.0" left="130.0" top="10.0" />
-                           </padding>
-                        </RadioButton>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="325.0" prefWidth="534.0">
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#LoadTxtFile" prefHeight="44.0" prefWidth="262.0" text="Load txt file" />
-                        <TextArea fx:id="Interperter_TextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="275.0" prefWidth="198.0" style="-fx-background-color: yellow;">
-                           <HBox.margin>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </TextArea>
-                        <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="276.0" prefWidth="251.0">
-                           <HBox.margin>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                           </HBox.margin>
-                           <center>
-                              <Canvas height="155.0" width="158.0" BorderPane.alignment="CENTER" />
-                           </center>
-                           <top>
-                              <Label text="&lt;- aileron -&gt;" BorderPane.alignment="CENTER" />
-                           </top>
-                           <right>
-                              <Label prefHeight="14.0" prefWidth="69.0" rotate="90.0" text="&lt;- elvator -&gt;" BorderPane.alignment="CENTER" />
-                           </right>
-                           <bottom>
-                              <VBox prefHeight="83.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                                 <children>
-                                    <Slider />
-                                    <Label text="rudder">
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" left="100.0" top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                           </bottom>
-                           <left>
-                              <HBox prefHeight="175.0" prefWidth="38.0" BorderPane.alignment="CENTER">
-                                 <children>
-                                    <Label rotate="270.0" text="throttle">
-                                       <HBox.margin>
-                                          <Insets left="-20.0" right="10.0" top="50.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Slider orientation="VERTICAL" prefHeight="120.0" prefWidth="34.0">
-                                       <HBox.margin>
-                                          <Insets left="-20.0" />
-                                       </HBox.margin></Slider>
-                                 </children>
-                                 <padding>
-                                    <Insets right="-10.0" />
-                                 </padding>
-                              </HBox>
-                           </left>
-                        </BorderPane>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
+            </HBox>
+            <Canvas height="248.0" layoutX="21.0" layoutY="71.0" style="-fx-background-color: blue;" width="270.0" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="482.0" AnchorPane.topAnchor="71.0" />
+            <Slider layoutX="513.0" layoutY="98.0" orientation="VERTICAL" prefHeight="176.0" prefWidth="32.0" />
+            <Canvas height="189.0" layoutX="545.0" layoutY="85.0" width="189.0" />
+            <Label layoutX="631.0" layoutY="308.0" text="rudder" />
+            <Label layoutX="716.0" layoutY="166.0" prefHeight="14.0" prefWidth="69.0" rotate="90.0" text="&lt;- elvator -&gt;" />
+            <Slider layoutX="529.0" layoutY="287.0" prefHeight="14.0" prefWidth="239.0" />
+            <Label layoutX="492.0" layoutY="171.0" rotate="270.0" text="throttle" />
          </children>
-      </HBox>
+      </AnchorPane>
    </center>
 </BorderPane>
