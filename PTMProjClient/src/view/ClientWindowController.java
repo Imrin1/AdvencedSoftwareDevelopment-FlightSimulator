@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import Interperter.Interperter;
+import Utilities.Utilities;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -118,7 +119,7 @@ public class ClientWindowController implements Observer {
 	
 	public void Connect() {
 		int port= Integer.parseInt(this.port_TextField.textProperty().get());
-		if(validIP(this.ip_TextField.textProperty().get()) && (port >0 && port < 65536))
+		if(Utilities.validIP(this.ip_TextField.textProperty().get()) && (port >0 && port < 65536))
 			vm.connect();
 	}
 
@@ -126,17 +127,5 @@ public class ClientWindowController implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {}
 	
-	public static boolean validIP(String ip) {
-	    if (ip == null || ip.isEmpty()) return false;
-	    ip = ip.trim();
-	    if ((ip.length() < 6) & (ip.length() > 15)) return false;
-
-	    try {
-	        Pattern pattern = Pattern.compile("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
-	        Matcher matcher = pattern.matcher(ip);
-	        return matcher.matches();
-	    } catch (PatternSyntaxException ex) {
-	        return false;
-	    }
-	}
+	
 }
