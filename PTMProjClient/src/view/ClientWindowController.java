@@ -40,6 +40,7 @@ import view_model.ViewModel;
 public class ClientWindowController implements Observer {
 	private Stage stage;
 	ViewModel vm;
+	int[][] mapData;
 	@FXML
 	TextField ip_TextField;
 	@FXML
@@ -77,14 +78,34 @@ public class ClientWindowController implements Observer {
             e.printStackTrace();
         }
 	}
-	public void LoadData() {
+	public void LoadData() throws Exception {
 		 FileChooser fc= new FileChooser();
-		 fc.setTitle("open file");
+		 fc.setTitle("open csv file");
 		 fc.setInitialDirectory(new File("./resources"));
 		 File chosen = fc.showOpenDialog(null);
+		 if(!chosen.getName().endsWith(".csv")) {
+			 throw new Exception("wrong file type");
+		 }
 		 if(chosen!=null) {
 			 System.out.println(chosen.getName());
 		 }
+		 try (BufferedReader in = new BufferedReader(new FileReader(chosen))) {
+			String line = in.readLine();
+			String[] attributes = null;
+			int i=0;
+			
+			 while(line!=null) {
+				 attributes = line.split(",");
+				 for (int j = 0; j < attributes.length; j++) {
+					mapData[i][j]=Integer.parseInt(attributes[j]);
+				}
+				 line=in.readLine();
+				 i++;
+			}
+			 
+			 
+			 
+		}
 	}
 	
 	public void LoadTxtFile() throws Exception {
@@ -98,17 +119,19 @@ public class ClientWindowController implements Observer {
 		 if(chosen!=null) {
 			 System.out.println(chosen.getName());
 		 }
-		BufferedReader in = new BufferedReader(new FileReader(chosen));
-		String line = in.readLine();
-		 Interperter_TextArea.clear();
-		 while(line!=null) {
-			 Interperter_TextArea.appendText(line);
-			 Interperter_TextArea.appendText("\n");
-			 line=in.readLine();
+		try (BufferedReader in = new BufferedReader(new FileReader(chosen))) {
+			String line = in.readLine();
+			 Interperter_TextArea.clear();
+			 while(line!=null) {
+				 Interperter_TextArea.appendText(line);
+				 Interperter_TextArea.appendText("\n");
+				 line=in.readLine();
+			}
 		}
 		 
 		 
 	}
+	
 	
 	public void Interpert() {	
 		if(manual.isSelected())
