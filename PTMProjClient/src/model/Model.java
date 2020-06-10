@@ -23,7 +23,7 @@ public class Model extends Observable{
 		}
 	}
 	
-
+//try
 	public int Interpert(String[] arr) {
 		Interperter interpeter = new Interperter();
 		return interpeter.interpret(arr);
