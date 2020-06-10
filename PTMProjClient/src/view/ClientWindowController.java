@@ -60,7 +60,7 @@ public class ClientWindowController implements Observer {
 	TextArea Interperter_TextArea;
 	@FXML
 	RadioButton manual,AutoPilot;
-<<<<<<< HEAD
+
 	
 	@FXML
 	Canvas joystickPaint;
@@ -69,10 +69,10 @@ public class ClientWindowController implements Observer {
 	Joystick joystick;
 	GraphicsContext gc;
 	
-=======
+
 	@FXML
 	MapDisplayer mapDisplayer;
->>>>>>> refs/remotes/origin/Imri-branch
+
 	public ClientWindowController() {
 		vm=new ViewModel();
 		stage= new Stage();
@@ -86,7 +86,7 @@ public class ClientWindowController implements Observer {
 		vm.ToInterpert.bind(this.Interperter_TextArea.textProperty());
 		vm.ip.bind(ip_TextField.textProperty());
 		vm.port.bind(port_TextField.textProperty());
-<<<<<<< HEAD
+
 		this.joystickPaint=new Canvas(189.0,189.0);
 		this.joystickPaint.setMouseTransparent(true);
 		//this.joystickPaint.setOnMouseDragged(me->this.joystick.drawCircle(this.gc,this.joystickPaint,(int)me.getX(),(int)me.getY()));
@@ -98,11 +98,10 @@ public class ClientWindowController implements Observer {
 		this.joystick.drawCircle(gc,this.joystickPaint);
 		/// //// /   
 		System.out.println("check");
-=======
+
 		vm.startX.bind(this.startX);
 		vm.startY.bind(this.startY);
 		vm.cellSize.bind(this.cellSize);
->>>>>>> refs/remotes/origin/Imri-branch
 	}
 	
 	
