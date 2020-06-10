@@ -1,4 +1,4 @@
-package Interperter;
+package interpreter;
 
 import java.net.Socket;
 

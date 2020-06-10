@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Observable;
 
-import Interperter.*;
+import interpreter.*;
 public class Model extends Observable{
 	 
 	

@@ -11,8 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import Interperter.Interperter;
 import Utilities.Utilities;
+import interpreter.Interperter;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +20,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -29,8 +31,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -50,6 +54,13 @@ public class ClientWindowController implements Observer {
 	@FXML
 	RadioButton manual,AutoPilot;
 	
+	@FXML
+	Canvas joystickPaint;
+	
+	
+	Joystick joystick;
+	GraphicsContext gc;
+	
 	public ClientWindowController() {
 		vm=new ViewModel();
 		stage= new Stage();
@@ -59,8 +70,19 @@ public class ClientWindowController implements Observer {
 		vm.ToInterpert.bind(this.Interperter_TextArea.textProperty());
 		vm.ip.bind(ip_TextField.textProperty());
 		vm.port.bind(port_TextField.textProperty());
+		this.joystickPaint=new Canvas(189.0,189.0);
+		this.joystickPaint.setMouseTransparent(true);
+		//this.joystickPaint.setOnMouseDragged(me->this.joystick.drawCircle(this.gc,this.joystickPaint,(int)me.getX(),(int)me.getY()));
 		
+		
+		///////// initialize the joystick location
+		this.joystick=new Joystick((int)this.joystickPaint.getHeight()/2,(int)this.joystickPaint.getWidth()/2 ,(int)this.joystickPaint.getWidth()/4);
+		this.gc = this.joystickPaint.getGraphicsContext2D();
+		this.joystick.drawCircle(gc,this.joystickPaint);
+		/// //// /   
+		System.out.println("check");
 	}
+	
 	
 	public void OpenPopup() {
 		Parent root = null;
@@ -146,6 +168,20 @@ public class ClientWindowController implements Observer {
 			vm.connect();
 	}
 
+	
+	//Paint the joystick at init point
+	public void joystickReleased() {
+		this.joystick.drawCircle(gc,this.joystickPaint);
+	}
+	//joystick Painter while mouse dragged
+	public void joystickPainter() {
+		
+		
+		//if(manual.isPressed()) {
+			
+			
+		//}
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {}

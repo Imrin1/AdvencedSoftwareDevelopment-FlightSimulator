@@ -1,4 +1,4 @@
-package Interperter;
+package interpreter;
 
 public class DivideExpression extends BinaryExpression{
 

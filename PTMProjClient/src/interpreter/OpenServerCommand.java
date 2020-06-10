@@ -1,4 +1,5 @@
-package Interperter;
+package interpreter;
+
 public class OpenServerCommand implements Command {
 	
 	public OpenServerCommand() {

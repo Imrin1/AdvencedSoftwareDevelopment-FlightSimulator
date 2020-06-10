@@ -1,4 +1,4 @@
-package Interperter;
+package interpreter;
 
 public abstract class BinaryExpression implements Expression{
 
