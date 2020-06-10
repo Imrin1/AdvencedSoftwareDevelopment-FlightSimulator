@@ -16,6 +16,7 @@ public class MapDisplayer extends Canvas {
 
 	public void SetMapData(int[][]data) {
 		this.mapData=data;
+		redraw();
 	}
 	
 	public void redraw() {
@@ -26,17 +27,16 @@ public class MapDisplayer extends Canvas {
 			double h=H / mapData.length;
 			int maxHeight=Utilities.getMaxValue(mapData);
 			int minHeight=0;
-			
+			int maxHex = 255;
+			int minHex = 0;
 			GraphicsContext gc = getGraphicsContext2D();
 		 
 			gc.clearRect(0, 0, W, H);
 			for (int i = 0; i < mapData.length; i++) {
 				for (int j = 0; j < mapData[i].length; j++) {
-					if(mapData[i][j]!=0) {
-						gc.setFill(new Color(255-255*(mapData[i][j]-minHeight)/maxHeight, 255*(mapData[i][j]-minHeight)/maxHeight,0,1));
+		
+						gc.setFill(Color.rgb(maxHex - maxHex*(mapData[i][j]-minHeight)/(maxHeight -minHeight), minHex + maxHex*(mapData[i][j]-minHeight)/(maxHeight -minHeight),0));
 						gc.fillRect(j*w, i*h, w, h);
-							
-					}
 				}
 			}
 		}

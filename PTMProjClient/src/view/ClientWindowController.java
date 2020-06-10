@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -14,6 +15,8 @@ import java.util.regex.PatternSyntaxException;
 import Interperter.Interperter;
 import Utilities.Utilities;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -38,28 +41,39 @@ import model.Model;
 import view_model.ViewModel;
 
 public class ClientWindowController implements Observer {
-	private Stage stage;
+	
 	ViewModel vm;
+	private Stage stage;
 	int[][] mapData;
+	public DoubleProperty startX;
+	public DoubleProperty startY;
+	public DoubleProperty cellSize;
 	@FXML
 	TextField ip_TextField;
 	@FXML
 	TextField port_TextField;
-	@FXML
+	@FXML 
 	TextArea Interperter_TextArea;
 	@FXML
 	RadioButton manual,AutoPilot;
-	
+	@FXML
+	MapDisplayer mapDisplayer;
 	public ClientWindowController() {
 		vm=new ViewModel();
 		stage= new Stage();
+		
+		startX= new SimpleDoubleProperty();
+		startY = new SimpleDoubleProperty();
+		cellSize = new SimpleDoubleProperty();
 		this.Interperter_TextArea =new TextArea("none");
 		this.ip_TextField=new TextField();
 		this.port_TextField=new TextField();
 		vm.ToInterpert.bind(this.Interperter_TextArea.textProperty());
 		vm.ip.bind(ip_TextField.textProperty());
 		vm.port.bind(port_TextField.textProperty());
-		
+		vm.startX.bind(this.startX);
+		vm.startY.bind(this.startY);
+		vm.cellSize.bind(this.cellSize);
 	}
 	
 	public void OpenPopup() {
@@ -91,19 +105,25 @@ public class ClientWindowController implements Observer {
 		 }
 		 try (BufferedReader in = new BufferedReader(new FileReader(chosen))) {
 			String line = in.readLine();
-			String[] attributes = null;
-			int i=0;
-			
-			 while(line!=null) {
-				 attributes = line.split(",");
-				 for (int j = 0; j < attributes.length; j++) {
-					mapData[i][j]=Integer.parseInt(attributes[j]);
-				}
-				 line=in.readLine();
-				 i++;
+			String[] starts = line.split(",");
+			this.startX.set(Double.parseDouble(starts[0]));
+			this.startY.set(Double.parseDouble(starts[1]));
+			line = in.readLine();
+			this.cellSize.set(Double.parseDouble(line.split(",")[0]));
+			ArrayList<String[]>row =new ArrayList<String[]>();
+			 while((line= in.readLine())!=null) {
+				 row.add(line.split(","));
 			}
 			 
+			 mapData= new int[row.size()][];
+			 for (int i = 0; i < row.size(); i++) {
+				 mapData[i] = new int[row.get(i).length];
+				 for (int j = 0; j < row.get(i).length; j++) {
+					mapData[i][j] = Integer.parseInt(row.get(i)[j]);
+				}
+			}
 			 
+			 this.mapDisplayer.SetMapData(mapData);
 			 
 		}
 	}
@@ -113,9 +133,6 @@ public class ClientWindowController implements Observer {
 		 fc.setTitle("open txt file");
 		 fc.setInitialDirectory(new File("./resources"));
 		 File chosen = fc.showOpenDialog(null);
-		 if(!chosen.getName().endsWith(".txt")) {
-			 throw new Exception("wrong file type");
-		 }
 		 if(chosen!=null) {
 			 System.out.println(chosen.getName());
 		 }
