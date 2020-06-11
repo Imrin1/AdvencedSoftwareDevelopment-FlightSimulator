@@ -40,9 +40,7 @@ public class ViewModel  extends Observable implements Observer{
 		return m.Interpert(arr);
 	}
 	public void connect() {
-		System.out.println(ip.get()+(port.get()));
-		
-		m.connect(ip.getValue(), port.getValue());
+		m.connect(ip.getValue(), Integer.parseInt(port.getValue()));
 	}
 
 	@Override

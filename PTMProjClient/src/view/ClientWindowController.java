@@ -6,10 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -19,8 +21,10 @@ import interpreter.Interperter;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -38,16 +42,18 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import model.Model;
 import view_model.ViewModel;
 
-public class ClientWindowController implements Observer {
+public class ClientWindowController implements Observer ,Initializable {
 	
 	ViewModel vm;
 	private Stage stage;
@@ -60,6 +66,8 @@ public class ClientWindowController implements Observer {
 	public DoubleProperty airplaneX;
 	public DoubleProperty airplaneY;
 	public DoubleProperty angle;
+	public DoubleProperty destX;
+	public DoubleProperty destY;
 	
 	private Image airplaneImg;
 	private Image destinationImg;
@@ -97,7 +105,7 @@ public class ClientWindowController implements Observer {
 		airplaneX = new SimpleDoubleProperty();
 		airplaneY = new SimpleDoubleProperty();
 		angle = new SimpleDoubleProperty();
-		
+		this.angle.set(0);
 		try {
 			this.airplaneImg = new Image(new FileInputStream("./resources/Airplane.png"));
 			this.destinationImg = new Image(new FileInputStream("./resources/destination.png"));
@@ -183,6 +191,7 @@ public class ClientWindowController implements Observer {
 		}
 		if(ClientWindowController.getPopup().equals("CalculatePath")) {
 			//need to fill
+			
 		}
 		this.ip_TextField.clear();
 		this.port_TextField.clear();
@@ -201,12 +210,17 @@ public class ClientWindowController implements Observer {
 			 System.out.println(chosen.getName());
 		 }
 		 try (BufferedReader in = new BufferedReader(new FileReader(chosen))) {
-			String line = in.readLine();
+			
+			 String line = in.readLine();
 			String[] starts = line.split(",");
 			this.startX.set(Double.parseDouble(starts[0]));
 			this.startY.set(Double.parseDouble(starts[1]));
+			this.airplaneX.setValue(this.startX.getValue());
+			this.airplaneY.setValue(this.startY.getValue());
+			
 			line = in.readLine();
 			this.cellSize.set(Double.parseDouble(line.split(",")[0]));
+			
 			ArrayList<String[]>row =new ArrayList<String[]>();
 			 while((line= in.readLine())!=null) {
 				 row.add(line.split(","));
@@ -221,6 +235,7 @@ public class ClientWindowController implements Observer {
 			}
 			 
 			 this.mapDisplayer.SetMapData(mapData);
+			 this.drawAirplane();
 			 
 		}
 	}
@@ -247,18 +262,31 @@ public class ClientWindowController implements Observer {
 	}
 	
 	public void drawAirplane() {
-		
-		double w = mapData[0].length;
-		double h = mapData.length;
 		double W = airplane.getWidth();
 		double H = airplane.getHeight();
-		
-		
+		double w = W / mapData[0].length;
+		double h = H / mapData.length;
+		double offset =30;
 		GraphicsContext gc = airplane.getGraphicsContext2D();
-		gc.clearRect(0, 0, W, H);
-		airplane.setRotate(this.angle.getValue().doubleValue());
-		gc.drawImage(airplaneImg, w*airplaneX.getValue().doubleValue(), h*airplaneY.getValue().doubleValue(),W,H);
+		gc.clearRect(0, 0,W, H);
+		Rotate r = new Rotate(this.angle.getValue(),w*airplaneX.getValue()*(-1) + offset/2,h*airplaneY.getValue()+ offset/2);
+		gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+		gc.drawImage(airplaneImg, w*airplaneX.getValue()*(-1),h*airplaneY.getValue(),offset,offset);
 	}
+	
+	public void drawDestination() {
+		double W = destination.getWidth();
+		double H = destination.getHeight();
+		double w = W / mapData[0].length;
+		double h = H / mapData.length;
+		double offset = 25;
+		GraphicsContext gc = destination.getGraphicsContext2D();
+		gc.clearRect(0, 0,W, H);
+		gc.drawImage(destinationImg, destX.getValue(),destY.getValue(),offset,offset);
+		
+	}
+	
+	
 	
 	public void Interpert() {	
 		if(manual.isSelected())
@@ -266,8 +294,6 @@ public class ClientWindowController implements Observer {
 		System.out.println("check");
 		//vm.Interpert();
 	}
-	
-
 	
 	//Paint the joystick at init point
 	public void joystickReleased() {
@@ -283,17 +309,35 @@ public class ClientWindowController implements Observer {
 		//}
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {}
-
+	EventHandler<MouseEvent> clickOnMap = new EventHandler<MouseEvent>() {
+		
+		@Override
+		public void handle(MouseEvent event) {
+			System.out.println("click on map event!!");
+			destX.set(event.getX());
+			destY.set(event.getY());
+			drawDestination();
+			
+		}
+	};
 
 	public static String getPopup() {
 		return Popup;
 	}
 
-
 	public static void setPopup(String popup) {
 		Popup = popup;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
