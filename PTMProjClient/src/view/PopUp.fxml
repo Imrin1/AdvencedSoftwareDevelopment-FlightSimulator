@@ -12,6 +12,6 @@
       <Label layoutX="20.0" layoutY="82.0" text="Port: " />
       <TextField fx:id="ip_TextField" layoutX="65.0" layoutY="41.0" />
       <TextField fx:id="port_Text_Field" layoutX="65.0" layoutY="78.0" />
-      <Button layoutX="204.0" layoutY="125.0" mnemonicParsing="false" onAction="#Connect" text="Connect" />
+      <Button layoutX="204.0" layoutY="125.0" mnemonicParsing="false" onAction="#Enter" text="Connect" />
    </children>
 </AnchorPane>

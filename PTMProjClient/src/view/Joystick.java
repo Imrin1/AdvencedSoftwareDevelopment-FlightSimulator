@@ -14,6 +14,7 @@ public class Joystick {
 	public Joystick(int x,int y,int radius) {
 		this.center=new Point(x,y);
 		this.Radius=radius;
+		
 	}
 	
 	
@@ -24,13 +25,9 @@ public class Joystick {
         System.out.println(center.x+","+ center.y+","+Radius);
        // gc.fillOval(center.x, center.y, Radius, Radius);
         gc.fillOval(100, 100, 47, 47);
-
-        
         
         canvas.getGraphicsContext2D().strokeOval(center.x-Radius, center.y-Radius, Radius, Radius);
         canvas.getGraphicsContext2D().fillOval(center.x-Radius, center.y-Radius, Radius * 2, Radius * 2);
-
-
 
     }
 	
