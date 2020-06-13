@@ -39,10 +39,13 @@ public class ViewModel  extends Observable implements Observer{
 		String[] arr = ToInterpert.get().split("\n");
 		return m.Interpert(arr);
 	}
-	public void connect() {
-		m.connect(ip.getValue(), Integer.parseInt(port.getValue()));
+	public void connectCalculatePath() {
+		m.connectCalculatePath(ip.getValue(), Integer.parseInt(port.getValue()));
 	}
-
+	public void connectSimulator() {
+		m.connectSimulator(ip.getValue(), Integer.parseInt(port.getValue()));
+		
+	}
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub

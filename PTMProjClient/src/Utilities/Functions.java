@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class Utilities {
+public class Functions {
 
 	
 	 public static int getMaxValue(int[][] numbers) {

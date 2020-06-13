@@ -1,7 +1,7 @@
 package view;
 
 
-import Utilities.Utilities;
+import Utilities.Functions;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -25,7 +25,7 @@ public class MapDisplayer extends Canvas {
 			double H = getHeight();
 			double w=W / mapData[0].length;
 			double h=H / mapData.length;
-			int maxHeight=Utilities.getMaxValue(mapData);
+			int maxHeight=Functions.getMaxValue(mapData);
 			int minHeight=0;
 			int maxHex = 255;
 			int minHex = 0;

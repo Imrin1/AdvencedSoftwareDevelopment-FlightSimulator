@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import Utilities.Utilities;
+import Utilities.Functions;
 import interpreter.Interperter;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
@@ -186,11 +186,12 @@ public class ClientWindowController implements Observer ,Initializable {
 		
 		if(ClientWindowController.getPopup().equals("Connect")) {
 			int port= Integer.parseInt(this.port_TextField.textProperty().getValue());
-			if(Utilities.validIP(this.ip_TextField.textProperty().get()) && (port >0 && port < 65536))
-				vm.connect();
+			if(Functions.validIP(this.ip_TextField.textProperty().get()) && (port >0 && port < 65536))
+				vm.connectSimulator();
 		}
 		if(ClientWindowController.getPopup().equals("CalculatePath")) {
 			//need to fill
+			vm.connectCalculatePath();
 			
 		}
 		this.ip_TextField.clear();
