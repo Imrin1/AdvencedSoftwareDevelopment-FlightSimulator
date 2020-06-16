@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -24,8 +26,12 @@ public class Model extends Observable implements Observer{
 	public static BufferedWriter out;
 	public static BufferedReader in;
 	private String[] solution;
+	public static HashMap<String, Integer>directions = new HashMap<String, Integer>() ;
 	public Model(){
-		// TODO Auto-generated constructor stub
+		directions.put("up", 0);
+		directions.put("right", 90);
+		directions.put("down", 180);
+		directions.put("left", 270);
 	}
 	
 	public void connectCalculatePath(String ip, int port) {
@@ -48,36 +54,23 @@ public class Model extends Observable implements Observer{
 	}
 	public void CalculatePath() {
 		new Thread(()-> {
-			for (int i = 0; i < mapData.length; i++) {
-				for (int j = 0; j < mapData[i].length; j++) {
-					try {
-						out.append(mapData[i][j] + ",");
-					} catch (IOException e) {
-						e.printStackTrace();
+			try {
+				for (int i = 0; i < mapData.length; i++) {
+					for (int j = 0; j < mapData[i].length; j++) {
+							out.append(mapData[i][j] + ",");
 					}
+						out.append("/n");
+						out.flush();
 				}
-				try {
-					out.append("/n");
+					out.append("end");
+					out.append(this.airplaneX+","+this.airplaneY);
+					out.append(this.destX+","+this.destY);
 					out.flush();
-				} catch (IOException e) {
-					e.printStackTrace();
+					
+					solution = in.readLine().split(",");
+			}catch(IOException e) {
+				e.printStackTrace();
 				}
-			}
-			try {
-				out.append("end");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			
-			try {
-				solution = in.readLine().split(",");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
 		}).start();
 	}
 //try

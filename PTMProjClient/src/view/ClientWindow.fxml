@@ -53,8 +53,6 @@
                </children>
             </HBox>
             <MapDisplayer fx:id ="mapDisplayer" height="248.0" layoutX="21.0" layoutY="71.0" style="-fx-background-color: blue;" width="270.0" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="482.0" AnchorPane.topAnchor="71.0" />
-            <Canvas fx:id="airplane" height="248.0" layoutX="21.0" layoutY="71.0" width="270.0"  />
-           <Canvas fx:id="destination" height="248.0" layoutX="21.0" layoutY="71.0" width="270.0"  />
             <Slider layoutX="513.0" layoutY="98.0" orientation="VERTICAL" prefHeight="176.0" prefWidth="32.0" />
             <Canvas fx:id="joystickPaint" height="189.0" layoutX="545.0" layoutY="85.0" width="189.0"  onMouseDragReleased="#joystickReleased"/>
             <Label layoutX="631.0" layoutY="308.0" text="rudder" />
