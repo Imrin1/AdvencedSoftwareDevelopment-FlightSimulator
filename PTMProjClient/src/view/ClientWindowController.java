@@ -93,19 +93,9 @@ public class ClientWindowController implements Observer ,Initializable {
 	MapDisplayer mapDisplayer;	
 	
 	public ClientWindowController() {
-		vm=new ViewModel();
 		stage= new Stage();
 		this.mapDisplayer=new MapDisplayer();
 		
-		startX= new SimpleDoubleProperty();
-		startY = new SimpleDoubleProperty();
-		cellSize = new SimpleDoubleProperty();
-		airplaneX = new SimpleDoubleProperty();
-		airplaneY = new SimpleDoubleProperty();
-		destX = new SimpleDoubleProperty();
-		destY = new SimpleDoubleProperty();
-		angle = new SimpleDoubleProperty();
-		this.angle.set(0);
 		try {
 			this.airplaneImg = new Image(new FileInputStream("./resources/Airplane.png"));
 			this.destinationImg = new Image(new FileInputStream("./resources/destination.png"));
@@ -114,16 +104,6 @@ public class ClientWindowController implements Observer ,Initializable {
 			e.printStackTrace();
 		}
 		
-		
-		
-		this.Interperter_TextArea =new TextArea("none");
-		this.ip_TextField=new TextField();
-		this.port_TextField=new TextField();
-		this.manual = new RadioButton();
-		this.AutoPilot = new RadioButton();
-		
-		
-
 		this.joystickPaint=new Canvas(189.0,189.0);
 		this.joystickPaint.setMouseTransparent(true);
 		//this.joystickPaint.setOnMouseDragged(me->this.joystick.drawCircle(this.gc,this.joystickPaint,(int)me.getX(),(int)me.getY()));
@@ -133,13 +113,38 @@ public class ClientWindowController implements Observer ,Initializable {
 		this.gc = this.joystickPaint.getGraphicsContext2D();
 		this.joystick.drawCircle(gc,this.joystickPaint);
 		/// //// /   
-		this.setVm();
 	}
 	
-	public void setVm() {
+	public void setViewmodel(ViewModel vm2) {
+		this.vm=vm2;
+		startX= new SimpleDoubleProperty();
+		startY = new SimpleDoubleProperty();
+		cellSize = new SimpleDoubleProperty();
+		airplaneX = new SimpleDoubleProperty();
+		airplaneY = new SimpleDoubleProperty();
+		destX = new SimpleDoubleProperty();
+		destY = new SimpleDoubleProperty();
+		angle = new SimpleDoubleProperty();
+		this.angle.set(0);
+		
+
+		this.Interperter_TextArea =new TextArea("none");
+		this.ip_TextField=new TextField();
+		this.port_TextField=new TextField();
+		this.manual = new RadioButton();
+		this.AutoPilot = new RadioButton();
+		
 		vm.ToInterpert.bind(this.Interperter_TextArea.textProperty());
 		vm.ip.bindBidirectional(ip_TextField.textProperty());
 		vm.port.bindBidirectional(port_TextField.textProperty());
+		
+		this.airplaneX.bindBidirectional(mapDisplayer.airplaneX);
+		this.airplaneY.bindBidirectional(mapDisplayer.airplaneY);
+		this.destX.bindBidirectional(mapDisplayer.destX);
+		this.destY.bindBidirectional(mapDisplayer.destY);
+		this.startX.bindBidirectional(mapDisplayer.startX);
+		this.startY.bindBidirectional(mapDisplayer.startY);
+		this.angle.bindBidirectional(mapDisplayer.angle);
 	}
 	
 	public void Connect() {
@@ -164,8 +169,7 @@ public class ClientWindowController implements Observer ,Initializable {
 	}
 	
 	public void CaclulatePath() {
-		vm.ip.bindBidirectional(ip_TextField.textProperty());
-		vm.port.bindBidirectional(port_TextField.textProperty());
+
 		Parent root = null;
         try {
             FXMLLoader fxmlLoader=new FXMLLoader(getClass().getResource("PopUp.fxml"));
@@ -214,13 +218,7 @@ public class ClientWindowController implements Observer ,Initializable {
 		 if(chosen!=null) {
 			 System.out.println(chosen.getName());
 		 }
-		 this.airplaneX.bindBidirectional(mapDisplayer.airplaneX);
-			this.airplaneY.bindBidirectional(mapDisplayer.airplaneY);
-			this.destX.bindBidirectional(mapDisplayer.destX);
-			this.destY.bindBidirectional(mapDisplayer.destY);
-			this.startX.bindBidirectional(mapDisplayer.startX);
-			this.startY.bindBidirectional(mapDisplayer.startY);
-			this.angle.bindBidirectional(mapDisplayer.angle);
+		
 		 try (BufferedReader in = new BufferedReader(new FileReader(chosen))) {
 			
 			 String line = in.readLine();

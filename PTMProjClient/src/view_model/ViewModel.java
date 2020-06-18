@@ -18,18 +18,27 @@ public class ViewModel  extends Observable implements Observer{
 	public StringProperty port;
 	public DoubleProperty startX;
 	public DoubleProperty startY;
+	public DoubleProperty airplaneX;
+	public DoubleProperty airplaneY;
+	public DoubleProperty destX;
+	public DoubleProperty destY;
+	public DoubleProperty angle;
 	public DoubleProperty cellSize;
 	
 	
 	public ViewModel() {
-		// TODO Auto-generated constructor stub
 		this.ToInterpert = new SimpleStringProperty();
 		this.ip = new SimpleStringProperty();
 		this.port = new SimpleStringProperty();
-		this.startX = new SimpleDoubleProperty();
-		this.startY = new SimpleDoubleProperty();
+		startX= new SimpleDoubleProperty();
+		startY = new SimpleDoubleProperty();
+		cellSize = new SimpleDoubleProperty();
+		airplaneX = new SimpleDoubleProperty();
+		airplaneY = new SimpleDoubleProperty();
+		destX = new SimpleDoubleProperty();
+		destY = new SimpleDoubleProperty();
+		angle = new SimpleDoubleProperty();
 		this.cellSize = new SimpleDoubleProperty();
-		this.m = new Model();
 	}
 	 public void setModel(Model model) {
 		 this.m = model;

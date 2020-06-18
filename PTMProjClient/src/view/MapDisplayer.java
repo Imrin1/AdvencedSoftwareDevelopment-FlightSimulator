@@ -97,6 +97,7 @@ public class MapDisplayer extends Canvas {
 	public void drawRoute() {
 		gc.setStroke(Color.BLACK);
 		for (int i = 0; i < solution.length; i++) {
+			
 			gc.strokeLine(airplaneX.getValue()*w, airplaneY.getValue()*h,airplaneX.getValue(), airplaneY.getValue());
 		}
 	}

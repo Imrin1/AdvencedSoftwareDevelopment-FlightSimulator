@@ -22,12 +22,17 @@ public class Model extends Observable implements Observer{
 	public double airplaneY;
 	public double destX;
 	public double destY;
+	public double angle;
 	int[][]mapData;
 	public static BufferedWriter out;
 	public static BufferedReader in;
 	private String[] solution;
+	private Interperter interperter;
+	clientModel cm;
 	public static HashMap<String, Integer>directions = new HashMap<String, Integer>() ;
 	public Model(){
+		this.cm = new clientModel();
+		
 		directions.put("up", 0);
 		directions.put("right", 90);
 		directions.put("down", 180);
@@ -37,7 +42,7 @@ public class Model extends Observable implements Observer{
 	public void connectCalculatePath(String ip, int port) {
 		try {
 			Socket socket=new Socket(ip, port);
-			System.out.println("connected to the server");
+			System.out.println("connected to the server- path calculator");
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		} catch (IOException e) {
@@ -45,14 +50,17 @@ public class Model extends Observable implements Observer{
 		}
 	}
 	public void connectSimulator(String ip, int port) {
-		try {
-			Socket socket=new Socket(ip, port);
-			System.out.println("connected to the server");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		cm.Connect(ip, port);
 	}
-	public void CalculatePath() {
+	public void sendSimulator(String[] toSend) {
+		cm.Send(toSend);
+	}
+	public void CalculatePath(int data[][] ,double airplaneX, double airplaneY, double destX, double destY) {
+		this.airplaneX =airplaneX;
+		this.airplaneY = airplaneY;
+		this.destX = destX;
+		this.destY = destY;
+		this.mapData = data;
 		new Thread(()-> {
 			try {
 				for (int i = 0; i < mapData.length; i++) {
@@ -68,6 +76,9 @@ public class Model extends Observable implements Observer{
 					out.flush();
 					
 					solution = in.readLine().split(",");
+					this.setChanged();
+					this.notifyObservers();
+					
 			}catch(IOException e) {
 				e.printStackTrace();
 				}
@@ -75,14 +86,11 @@ public class Model extends Observable implements Observer{
 	}
 //try
 	public int Interpert(String[] arr) {
-		Interperter interpeter = new Interperter();
-		return interpeter.interpret(arr);
+		 this.interperter = new Interperter();
+		return this.interperter.interpret(arr);
 	}
 
 @Override
 public void update(Observable o, Object arg) {}
 
-
-		
-	
 }
