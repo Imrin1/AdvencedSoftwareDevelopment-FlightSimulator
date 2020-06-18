@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class clientModel {
+public class ClientModel {
 	public static volatile boolean stop=false;
 	private static PrintWriter out;
 	private static Socket socket;
