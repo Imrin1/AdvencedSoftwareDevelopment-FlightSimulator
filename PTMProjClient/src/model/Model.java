@@ -30,6 +30,7 @@ public class Model extends Observable implements Observer{
 	private Interperter interperter;
 	ClientModel clientModel;
 	PathCalculator pathCalc;
+	
 	public static HashMap<String, Integer>directions = new HashMap<String, Integer>() ;
 	public Model(){
 		this.clientModel= new ClientModel();
@@ -47,6 +48,7 @@ public class Model extends Observable implements Observer{
 	public void sendSimulator(String[] toSend) {
 		clientModel.Send(toSend);
 	}
+	
 	public void connectCalculatePath(String ip, int port) {
 		pathCalc.connectCalculatePath(ip, port);
 	}
@@ -62,12 +64,20 @@ public class Model extends Observable implements Observer{
 				this.notifyObservers();
 		}).start();
 	}
+	public void airplanePosition(double StartX, double StartY) {
+		this.startX = StartX;
+		this.startY = StartY;
+		new Thread(()->{
+			
+			
+		}).start();
+	}
 //try
 	public int Interpert(String[] arr) {
 		 this.interperter = new Interperter();
 		return this.interperter.interpret(arr);
 	}
-
+	
 @Override
 public void update(Observable o, Object arg) {}
 
