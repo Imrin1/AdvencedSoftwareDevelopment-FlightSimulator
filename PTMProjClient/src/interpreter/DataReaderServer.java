@@ -41,11 +41,6 @@ public class DataReaderServer   {
 		ServerSocket server=new ServerSocket(port);
 		server.setSoTimeout(1000);
 	
-	
-		
-		
-		
-		
 		while(!stop){
 			try{
 				Socket aClient=server.accept(); // blocking call

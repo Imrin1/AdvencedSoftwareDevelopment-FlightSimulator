@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -68,7 +69,22 @@ public class Model extends Observable implements Observer{
 		this.startX = StartX;
 		this.startY = StartY;
 		new Thread(()->{
+			try {
+				Socket socket = new Socket("127.0.0.1",5402);
+				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				PrintWriter out = new PrintWriter(socket.getOutputStream());
 			
+				
+				
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
 		}).start();
 	}
