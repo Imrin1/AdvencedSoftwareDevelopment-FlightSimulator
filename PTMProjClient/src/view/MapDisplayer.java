@@ -96,9 +96,26 @@ public class MapDisplayer extends Canvas {
 	
 	public void drawRoute() {
 		gc.setStroke(Color.BLACK);
+		double routeX = airplaneX.getValue();
+		double routeY = airplaneY.getValue();
 		for (int i = 0; i < solution.length; i++) {
-			
-			gc.strokeLine(airplaneX.getValue()*w, airplaneY.getValue()*h,airplaneX.getValue(), airplaneY.getValue());
+				if(solution[i]=="right") {
+					gc.strokeLine(routeX, routeY,routeX + w, routeY);
+					routeX+=w;
+				}
+				if(solution[i]=="left") {
+					gc.strokeLine(routeX, routeY,routeX - w, routeY);
+					routeX -= w;
+				}
+				if(solution[i]=="down") {
+					gc.strokeLine(routeX, routeY,routeX, routeY + h);
+					routeY += h;
+				}	
+				if(solution[i]=="up") {
+					gc.strokeLine(routeX, routeY,routeX, routeY - h);
+					routeY -=h;
+				}
+				
 		}
 	}
 	
