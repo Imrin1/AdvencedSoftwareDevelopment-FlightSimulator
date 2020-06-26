@@ -98,6 +98,8 @@ public class ClientWindowController implements Observer {
 		this.joystick.drawCircle(gc,this.joystickPaint);
 		/// //// /   
 		System.out.println("check");
+		System.out.println("check");
+
 
 		vm.startX.bind(this.startX);
 		vm.startY.bind(this.startY);
@@ -187,9 +189,13 @@ public class ClientWindowController implements Observer {
 	}
 	
 	public void Connect() {
-		int port= Integer.parseInt(this.port_TextField.textProperty().get());
-		if(Utilities.validIP(this.ip_TextField.textProperty().get()) && (port >0 && port < 65536))
-			vm.connect();
+		// Integer port = Integer.valueOf(this.port_TextField.getText());
+		// System.out.println(port);
+		//int port= Integer.parseInt(this.port_TextField.textProperty().get());
+		//if(Utilities.validIP(this.ip_TextField.textProperty().get()) && (port >0 && port < 65536))
+			//vm.connect();
+		// String ip= (this.ip_TextField.getText());
+		// System.out.println(ip);
 	}
 
 	

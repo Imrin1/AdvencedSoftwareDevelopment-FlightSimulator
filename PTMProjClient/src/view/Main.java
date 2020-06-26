@@ -17,7 +17,7 @@ public class Main extends Application {
 			Model m=new Model(); // Model
 			ViewModel vm=new ViewModel(); // View-Model
 			m.addObserver(vm);
-
+		//	ClientWindowController v= new ClientWindowController();
 			
 			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("ClientWindow.fxml"));
 			Scene scene = new Scene(root,400,400);

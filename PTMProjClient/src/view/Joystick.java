@@ -21,9 +21,9 @@ public class Joystick {
         
         gc.setFill(Color.BLACK);
         gc.setStroke(Color.BLACK);
-        System.out.println(center.x+","+ center.y+","+Radius);
+        System.out.println(center.x+","+ center.y+","+10);
        // gc.fillOval(center.x, center.y, Radius, Radius);
-        gc.fillOval(100, 100, 47, 47);
+        gc.fillOval(50, 50, 10, 10);
 
         
         
