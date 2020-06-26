@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Observable;
@@ -28,6 +29,7 @@ public class Model extends Observable implements Observer{
 	public static BufferedWriter out;
 	public static BufferedReader in;
 	private String[] solution;
+	public static volatile boolean stop = false;
 	private Interperter interperter;
 	ClientModel clientModel;
 	PathCalculator pathCalc;
@@ -73,8 +75,6 @@ public class Model extends Observable implements Observer{
 				Socket socket = new Socket("127.0.0.1",5402);
 				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				PrintWriter out = new PrintWriter(socket.getOutputStream());
-			
-				
 				
 				try {
 					Thread.sleep(250);
