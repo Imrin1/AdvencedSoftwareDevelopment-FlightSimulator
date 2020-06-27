@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -42,6 +41,7 @@ public class Model extends Observable implements Observer{
 		directions.put("right", 90);
 		directions.put("down", 180);
 		directions.put("left", 270);
+		
 	}
 	
 	
@@ -67,6 +67,7 @@ public class Model extends Observable implements Observer{
 				this.notifyObservers();
 		}).start();
 	}
+	
 	public void airplanePosition(double StartX, double StartY) {
 		this.startX = StartX;
 		this.startY = StartY;
@@ -75,6 +76,9 @@ public class Model extends Observable implements Observer{
 				Socket socket = new Socket("127.0.0.1",5402);
 				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				PrintWriter out = new PrintWriter(socket.getOutputStream());
+				
+				
+				
 				
 				try {
 					Thread.sleep(250);
