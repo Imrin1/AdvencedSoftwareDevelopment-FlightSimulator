@@ -203,14 +203,17 @@ public class ClientWindowController implements Observer {
 	public void joystickReleased() {
 		this.joystick.drawCircle(gc,this.joystickPaint);
 	}
+	
 	//joystick Painter while mouse dragged
 	public void joystickPainter() {
 		
 		
-		//if(manual.isPressed()) {
+		if(manual.isPressed()) {
+			while(true) {
+				this.joystick.drawCircle(gc,this.joystickPaint,);
+			}
 			
-			
-		//}
+		}
 	}
 
 	@Override
