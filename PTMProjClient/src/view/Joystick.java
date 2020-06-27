@@ -7,13 +7,14 @@ import javafx.scene.paint.RadialGradient;
 
 public class Joystick {
 
-	
+	// check
 	private Point center;
 	private int Radius;
 	
 	public Joystick(int x,int y,int radius) {
 		this.center=new Point(x,y);
 		this.Radius=radius;
+		
 		
 	}
 	
